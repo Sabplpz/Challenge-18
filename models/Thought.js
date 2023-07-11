@@ -29,8 +29,7 @@ const thoughtSchema = new mongoose.Schema(
         return new Date(date).toLocaleDateString('en-us', { weekday: "short", year: "numeric", month: "short", day: "numeric" });
       }
     },
-    // username: { type: String, required: true },
-    username: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    username: { type: String, required: true },
     reactions: [reactionSchema],
   },
   {

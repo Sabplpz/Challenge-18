@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongoose').Types;
-const { Thought } = require('../models');
+const { Thought, User } = require('../models');
 
 module.exports = {
     // Get all students
@@ -37,10 +37,21 @@ module.exports = {
         //   }
         try {
             const thought = await Thought.create(req.body);
+            const user = await User.findOneAndUpdate(
+              { _id: req.params.userId },
+              { $addToSet: { thoughts: thought._id } },
+              { new: true }
+            );
+            if (!user) {
+              return res.status(404).json({
+                message: 'Application created, but found no user with that ID',
+              })
+            }
             res.json(thought);
-        } catch (err) {
+          } catch (err) {
+            console.log(err);
             res.status(500).json(err);
-        }
+          }
     },
     async updateThought(req, res) {
         // {
